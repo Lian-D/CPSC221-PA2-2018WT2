@@ -2,12 +2,21 @@
 
 borderColorPicker::borderColorPicker(HSLAPixel fillColor, PNG & img, double tolerance,HSLAPixel center)
 {
-/* Your code here! */
+    borderColorPicker->color = fillColor;
+    borderColorPicker->im = img;
+    borderColorPicker->tol = tolerance;
+    borderColorPicker->center = center;
 }
 
 HSLAPixel borderColorPicker::operator()(int x, int y)
 {
-
-/* Your code here! */
+    for (){ //cycles through x
+        for(){ //cycles through y
+            if(){ //if we get the elucidian thing
+                return fillColor;
+            }
+            
+        } 
+    }
     
 }
