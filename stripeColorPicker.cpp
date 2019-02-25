@@ -14,7 +14,7 @@ HSLAPixel stripeColorPicker::operator()(int x, int y)
 
     //This means modulo of the colors stuff with the spacing given;
 
-    if (x % stripeColorPicker->spacing || y % stripeColorPicker->spacing){
+    if (x % stripeColorPicker->spacing == 0 || y % stripeColorPicker->spacing == 0){
         //This gives us the set stripe color
         return stripeColorPicker->color;
     }
