@@ -79,6 +79,19 @@ T Deque<T>::popR()
         T popped = data[k1];
         k1--;
         data.pop_back();
+        if(data.size() == 2*(k1-k2+1)){
+            vector<T> temp;
+            int k2c = k2;
+            for(int i = 0; i < (k1-k2+1); i++){
+                temp.push_back(data[k2c]);
+                k2c++;
+            }
+            // cout << "we have reached" << endl;
+            data.clear();
+            data = temp;
+            k1 = data.size()-1;
+            k2 = 0;
+            }
         return popped;
     }
 }
