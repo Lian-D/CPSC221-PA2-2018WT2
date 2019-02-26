@@ -2,8 +2,8 @@
 
 stripeColorPicker::stripeColorPicker(HSLAPixel fillColor, int stripeSpacing)
 {
-    stripeColorPicker->color = fillColor;
-    stripeColorPicker->spacing = stripeSpacing;
+    color = fillColor;
+    spacing = stripeSpacing;
 }
 
 HSLAPixel stripeColorPicker::operator()(int x, int y)
@@ -14,16 +14,17 @@ HSLAPixel stripeColorPicker::operator()(int x, int y)
 
     //This means modulo of the colors stuff with the spacing given;
 
-    if (x % stripeColorPicker->spacing == 0 || y % stripeColorPicker->spacing == 0){
+    if ((x % spacing) == 0){
         //This gives us the set stripe color
-        return stripeColorPicker->color;
+        return color;
     }
     else {
         //Otherwise it's a whitey boi
         HSLAPixel whiteboi;
         whiteboi.h = 0;
         whiteboi.s = 0;
-        whiteboi.l = 100;
+        whiteboi.a = 1;
+        whiteboi.l = 1;
         return whiteboi;
     }
 }

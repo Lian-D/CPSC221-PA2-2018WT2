@@ -2,20 +2,24 @@
 
 borderColorPicker::borderColorPicker(HSLAPixel fillColor, PNG & img, double tolerance,HSLAPixel center)
 {
-    borderColorPicker->color = fillColor;
-    borderColorPicker->im = img;
-    borderColorPicker->tol = tolerance;
-    borderColorPicker->center = center;
+    color = fillColor;
+    im = img;
+    tol = tolerance;
+    center = center;
 }
 
 HSLAPixel borderColorPicker::operator()(int x, int y)
 {
-    HSLAPixel *old = im.getPixel(x,y); //the returned pixel
-    if (*old->h + tol >= fillColor->h || *old->s + tol >= fillColor->s || *old->l + tol >= fillColor->l|| *old->a + tol >= fillColor->a){
-        return fillColor;
+    int xedge = x+3;
+    int yedge = y+3;
+
+    HSLAPixel *old = im.getPixel(x,y); //the original pixel
+    for (int a = (x-3); a <= xedge; a++){
+        for (int b= (y-3); b <= yedge; b++){
+            if (a >= (int) im.width() || b >= (int) im.height() || a < 0 || b < 0){
+                return color;
+            }
+        }
     }
-    else {
-        return *old;
-    }
-    
+    return *old;
 }
