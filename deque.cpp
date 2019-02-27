@@ -46,7 +46,7 @@ T Deque<T>::popL()
         k2++;
         // cout << "printing data size" << endl;
         // cout << data.size() << endl;
-        if(data.size() == 2*(k1-k2+1)){
+        if((k1-k2+1) < k2){
             vector<T> temp;
             int k2c = k2;
             for(int i = 0; i < (k1-k2+1); i++){
@@ -79,7 +79,7 @@ T Deque<T>::popR()
         T popped = data[k1];
         k1--;
         data.pop_back();
-        if(data.size() == 2*(k1-k2+1)){
+        if((k1-k2+1) < k2){
             vector<T> temp;
             int k2c = k2;
             for(int i = 0; i < (k1-k2+1); i++){
