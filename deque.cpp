@@ -79,7 +79,7 @@ T Deque<T>::popR()
         T popped = data[k1];
         k1--;
         data.pop_back();
-        if((k1-k2+1) < k2){
+        if((k1-k2+1) <= k2){
             vector<T> temp;
             int k2c = k2;
             for(int i = 0; i < (k1-k2+1); i++){
