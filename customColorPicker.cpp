@@ -7,7 +7,7 @@ CustomColorPicker::CustomColorPicker(HSLAPixel initial)
 
 HSLAPixel borderColorPicker::operator()(int x, int y)
 {
-    HSLAPixel *curr = prev;
+    HSLAPixel curr = *prev;
     prev = im.getPixel(x,y);
     return curr; 
 
