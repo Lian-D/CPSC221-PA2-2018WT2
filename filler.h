@@ -112,6 +112,8 @@ namespace filler
         animation fillRainBFS(PNG& img, int x, int y, 
                 long double freq, double tolerance, int frameFreq);
 
+ // Checks tolerance between a pixel and its neighbor
+        bool checkTolerance(HSLAPixel* opixel, double tolerance,HSLAPixel* npixel);
 
     /**
      * Filling function: a general helper that should be invoked by

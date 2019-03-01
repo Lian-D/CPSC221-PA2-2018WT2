@@ -53,10 +53,54 @@ animation filler::fillRainBFS(PNG& img, int x, int y,
     return fill<Queue>(img, x, y, a, tolerance, frameFreq);
 }
 
+
+bool filler::checkTolerance(HSLAPixel* opixel, double tolerance,HSLAPixel* npixel){
+    if(opixel->dist(*npixel) <= tolerance){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
 template <template <class T> class OrderingStructure>
 animation filler::fill(PNG& img, int x, int y, colorPicker& fillColor,
                        double tolerance, int frameFreq)
 {
+
+    OrderingStructure<vector<int>> os;
+
+    vector<HSLAPixel*> pixelyoinked;
+
+    vector<int> yoink;
+    yoink.push_back(x);
+    yoink.push_back(y);
+
+    HSLAPixel* first = img.getPixel(yoink[0],yoink[1]);
+    *first = fillColor(yoink[0],yoink[1]);
+    pixelyoinked.push_back(first);
+    os.add(yoink);
+
+    while(!os.isEmpty()){
+        vector<int> nyoink;
+        
+        nyoink = os.remove();
+        
+        HSLAPixel* upright = img.getPixel(nyoink[0]+1,nyoink[1]-1);
+
+        HSLAPixel* up = img.getPixel(nyoink[0],nyoink[1]-1);
+        
+        HSLAPixel* upleft = img.getPixel(nyoink[0]-1,nyoink[1]-1);
+        
+        HSLAPixel* left = img.getPixel(nyoink[0]-1,nyoink[1]);
+        
+        HSLAPixel* downleft = img.getPixel(nyoink[0]-1,nyoink[1]+1);
+        
+        HSLAPixel* down = img.getPixel(nyoink[0],nyoink[1]+1);
+        
+        HSLAPixel* downright = img.getPixel(nyoink[0],nyoink[1]+1); 
+        
+        HSLAPixel* right = img.getPixel(nyoink[0],nyoink[1])
     /**
      * @todo You need to implement this function!
      *
