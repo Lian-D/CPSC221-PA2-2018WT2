@@ -8,6 +8,8 @@
 animation filler::fillStripeDFS(PNG& img, int x, int y, HSLAPixel fillColor,
                                 int stripeSpacing, double tolerance, int frameFreq)
 {
+    stripeColorPicker sdfs(fillColor,stripeSpacing);
+    return fill<Stack>(img,x,y,sdfs, tolerance,frameFreq);
     /**
      * @todo Your code here! 
      */
@@ -16,6 +18,9 @@ animation filler::fillStripeDFS(PNG& img, int x, int y, HSLAPixel fillColor,
 animation filler::fillBorderDFS(PNG& img, int x, int y,
                                     HSLAPixel borderColor, double tolerance, int frameFreq)
 {
+    HSLAPixel* center = img.getPixel(x,y);
+    borderColorPicker bdfs(borderColor,img,tolerance,*center);
+    return fill<Stack>(img,x,y,bdfs,tolerance,frameFreq);
     /**
      * @todo Your code here! 
      */
@@ -32,6 +37,8 @@ animation filler::fillRainDFS(PNG& img, int x, int y,
 animation filler::fillStripeBFS(PNG& img, int x, int y, HSLAPixel fillColor,
                                 int stripeSpacing, double tolerance, int frameFreq)
 {
+    stripeColorPicker sbfs(fillColor,stripeSpacing);
+    return fill<Queue>(img,x,y,sbfs,tolerance,frameFreq);
     /**
      * @todo Your code here! 
      */
@@ -40,6 +47,9 @@ animation filler::fillStripeBFS(PNG& img, int x, int y, HSLAPixel fillColor,
 animation filler::fillBorderBFS(PNG& img, int x, int y,
                                     HSLAPixel borderColor, double tolerance, int frameFreq)
 {
+    HSLAPixel* center = img.getPixel(x,y);
+    borderColorPicker bbfs(borderColor,img,tolerance,*center);
+    return fill<Queue>(img,x,y,bbfs,tolerance,frameFreq);
     /**
      * @todo Your code here! You should replace the following line with a
      */
@@ -53,7 +63,6 @@ animation filler::fillRainBFS(PNG& img, int x, int y,
     return fill<Queue>(img, x, y, a, tolerance, frameFreq);
 }
 
-
 bool filler::checkTolerance(HSLAPixel* opixel, double tolerance,HSLAPixel* npixel){
     if(opixel->dist(*npixel) <= tolerance){
         return true;
@@ -63,14 +72,48 @@ bool filler::checkTolerance(HSLAPixel* opixel, double tolerance,HSLAPixel* npixe
     }
 }
 
+bool filler::findvector(vector<vector<int>> v1, vector<int> v2tofind){
+    for(int i = 0; i < v1.size(); i++){
+        if ((v1[i][0] == v2tofind[0]) && (v1[i][1] == v2tofind[1])){
+            return true;
+        }
+    }
+            return false;
+    }
+
+void filler::sendFrame(int k, int frameFreq, animation& ai,PNG& img){
+    if(k % frameFreq == 0){
+        ai.addFrame(img);
+    }
+
+}
+
 template <template <class T> class OrderingStructure>
 animation filler::fill(PNG& img, int x, int y, colorPicker& fillColor,
                        double tolerance, int frameFreq)
 {
+    // OrderingStructure<HSLAPixel*> os;
+
+    // vector<HSLAPixel*> pixelposyoinked;
+
+    // HSLAPixel* first = img.getPixel(x,y);
+    // *first = fillColor(x,y);    
+    // pixelposyoinked.push_back(first);
+    // os.add(first);
+    
+
+    // while(!os.isEmpty()){
+    //     os.remove();
+    //     if()
+    // }
+
+    int k = 0;
+    animation ai;
+
 
     OrderingStructure<vector<int>> os;
 
-    vector<HSLAPixel*> pixelyoinked;
+    vector<vector<int>> pixelposyoinked;
 
     vector<int> yoink;
     yoink.push_back(x);
@@ -78,29 +121,137 @@ animation filler::fill(PNG& img, int x, int y, colorPicker& fillColor,
 
     HSLAPixel* first = img.getPixel(yoink[0],yoink[1]);
     *first = fillColor(yoink[0],yoink[1]);
-    pixelyoinked.push_back(first);
+    pixelposyoinked.push_back(yoink);
     os.add(yoink);
+    k++;
+    sendFrame(k,frameFreq,ai,img);
 
     while(!os.isEmpty()){
         vector<int> nyoink;
         
         nyoink = os.remove();
         
+        HSLAPixel* nyoinkp = img.getPixel(nyoink[0],nyoink[1]);
+
         HSLAPixel* upright = img.getPixel(nyoink[0]+1,nyoink[1]-1);
 
+        vector<int> vupright;
+        vupright.push_back(nyoink[0]+1);
+        vupright.push_back(nyoink[1]-1); 
+
         HSLAPixel* up = img.getPixel(nyoink[0],nyoink[1]-1);
+
+        vector<int> vup;
+        vup.push_back(nyoink[0]);
+        vup.push_back(nyoink[1]-1);
+
         
         HSLAPixel* upleft = img.getPixel(nyoink[0]-1,nyoink[1]-1);
+
+        vector<int> vupleft;
+        vupleft.push_back(nyoink[0]-1);
+        vupleft.push_back(nyoink[1]-1);
+
         
         HSLAPixel* left = img.getPixel(nyoink[0]-1,nyoink[1]);
+
+        vector<int> vleft;
+        vleft.push_back(nyoink[0]-1);
+        vleft.push_back(nyoink[1]);
         
         HSLAPixel* downleft = img.getPixel(nyoink[0]-1,nyoink[1]+1);
+
+        vector<int> vdownleft;
+        vdownleft.push_back(nyoink[0]-1);
+        vdownleft.push_back(nyoink[1]+1);
         
         HSLAPixel* down = img.getPixel(nyoink[0],nyoink[1]+1);
+
+        vector<int> vdown;
+        vdown.push_back(nyoink[0]);
+        vdown.push_back(nyoink[1]+1);
         
-        HSLAPixel* downright = img.getPixel(nyoink[0],nyoink[1]+1); 
+        HSLAPixel* downright = img.getPixel(nyoink[0]+1,nyoink[1]+1); 
+
+        vector<int> vdownright;
+        vdownright.push_back(nyoink[0]+1);
+        vdownright.push_back(nyoink[1]+1);
         
-        HSLAPixel* right = img.getPixel(nyoink[0],nyoink[1])
+        HSLAPixel* right = img.getPixel(nyoink[0]+1,nyoink[1]);
+
+        vector<int> vright;
+        vright.push_back(nyoink[0]+1);
+        vright.push_back(nyoink[1]);
+
+        if(checkTolerance(nyoinkp,tolerance,upright) && !findvector(pixelposyoinked,vupright)){
+            *upright = fillColor(vupright[0],vupright[1]);
+            os.add(vupright);
+            pixelposyoinked.push_back(vupright);
+             k++;
+            sendFrame(k,frameFreq,ai,img);
+        }
+
+        if(checkTolerance(nyoinkp,tolerance,up) && !findvector(pixelposyoinked,vup)){
+            *up = fillColor(vup[0],vup[1]);
+            os.add(vup);
+            pixelposyoinked.push_back(vup);
+             k++;
+            sendFrame(k,frameFreq,ai,img);
+        }
+
+        if(checkTolerance(nyoinkp,tolerance,upleft) && !findvector(pixelposyoinked,vupleft)){
+            *upleft = fillColor(vupleft[0],vupleft[1]);
+            os.add(vupleft);
+            pixelposyoinked.push_back(vupleft);
+             k++;
+            sendFrame(k,frameFreq,ai,img);
+        }
+
+        if(checkTolerance(nyoinkp,tolerance,left) && !findvector(pixelposyoinked,vleft)){
+            *left = fillColor(vleft[0],vleft[1]);
+            os.add(vleft);
+            pixelposyoinked.push_back(vleft);
+             k++;
+            sendFrame(k,frameFreq,ai,img);
+        }
+
+        if(checkTolerance(nyoinkp,tolerance,downleft) && !findvector(pixelposyoinked,vdownleft)){
+          *downleft = fillColor(vdownleft[0],vdownleft[1]);
+          os.add(vdownleft);
+          pixelposyoinked.push_back(vdownleft); 
+           k++;
+           sendFrame(k,frameFreq,ai,img); 
+        }
+
+        if(checkTolerance(nyoinkp,tolerance,down) && !findvector(pixelposyoinked,vdown)){
+           *down =  fillColor(vdown[0],vdown[1]);
+            os.add(vdown);
+            pixelposyoinked.push_back(vdown);
+             k++;
+            sendFrame(k,frameFreq,ai,img);
+        }
+
+        if(checkTolerance(nyoinkp,tolerance,downright) && !findvector(pixelposyoinked,vdownright)){
+           *downright = fillColor(vdownright[0],vdownright[1]);
+            os.add(vdownright);
+            pixelposyoinked.push_back(vdownright);
+             k++;
+            sendFrame(k,frameFreq,ai,img);
+        }
+
+        if(checkTolerance(nyoinkp,tolerance,right) && !findvector(pixelposyoinked,vright)){
+            *right = fillColor(vright[0],vright[1]);
+            os.add(vright);
+            pixelposyoinked.push_back(vright);
+             k++;
+            sendFrame(k,frameFreq,ai,img);
+        }
+        ai.addFrame(img);
+    }
+
+ 
+
+
     /**
      * @todo You need to implement this function!
      *

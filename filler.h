@@ -10,6 +10,8 @@
 #include "stack.h"
 #include "queue.h"
 #include "animation.h"
+#include<vector> 
+#include<algorithm>
 
 
 #include "rainbowColorPicker.h" // given as an example
@@ -111,9 +113,15 @@ namespace filler
                 long double freq, double tolerance, int frameFreq);
         animation fillRainBFS(PNG& img, int x, int y, 
                 long double freq, double tolerance, int frameFreq);
+        
 
- // Checks tolerance between a pixel and its neighbor
+        // Checks tolerance between a pixel and its neighbor
         bool checkTolerance(HSLAPixel* opixel, double tolerance,HSLAPixel* npixel);
+
+        bool findvector(vector<vector<int>> v1, vector<int> v2tofind);
+
+        void sendFrame(int k, int frameFreq, animation& ai, PNG& img);
+
 
     /**
      * Filling function: a general helper that should be invoked by
@@ -135,6 +143,9 @@ namespace filler
     template <template <class T> class OrderingStructure>
     animation fill(PNG& img, int x, int y, colorPicker& fillColor,
                    double tolerance, int frameFreq);
+
+        
 }
+
 #include "filler.cpp"
 #endif
