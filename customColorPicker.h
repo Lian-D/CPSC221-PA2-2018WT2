@@ -11,11 +11,10 @@
 class CustomColorPicker : public colorPicker
 {
   public:
-    CustomColorPicker(HSLAPixel fillColor, int stripeSpacing);
+    CustomColorPicker(HSLAPixel initial);
     
     virtual HSLAPixel operator()(int x, int y);
 
   private:
-    HSLAPixel color; /**< Color used for the stripe. */
-    int spacing;     /**< Space between stripes. */
+    HSLAPixel* prev;
 };
