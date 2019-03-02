@@ -63,8 +63,8 @@ animation filler::fillRainBFS(PNG& img, int x, int y,
     return fill<Queue>(img, x, y, a, tolerance, frameFreq);
 }
 
-bool filler::checkTolerance(HSLAPixel* opixel, double tolerance,HSLAPixel* npixel){
-    if(opixel->dist(*npixel) <= tolerance){
+bool filler::checkTolerance(HSLAPixel opixel, double tolerance,HSLAPixel* npixel){
+    if(opixel.dist(*npixel) <= tolerance){
         return true;
     }
     else{
@@ -75,14 +75,16 @@ bool filler::checkTolerance(HSLAPixel* opixel, double tolerance,HSLAPixel* npixe
 bool filler::findvector(vector<vector<int>> v1, vector<int> v2tofind){
     for(int i = 0; i < v1.size(); i++){
         if ((v1[i][0] == v2tofind[0]) && (v1[i][1] == v2tofind[1])){
+            // cout<< "found item" << endl;
             return true;
         }
     }
-            return false;
+        // cout << "did not find" << endl;
+        return false;
     }
 
 void filler::sendFrame(int k, int frameFreq, animation& ai,PNG& img){
-    if(k % frameFreq == 0){
+    if((k % frameFreq) == 0){
         ai.addFrame(img);
     }
 
@@ -92,6 +94,7 @@ template <template <class T> class OrderingStructure>
 animation filler::fill(PNG& img, int x, int y, colorPicker& fillColor,
                        double tolerance, int frameFreq)
 {
+
     int k = 0;
     animation ai;
 
@@ -297,7 +300,176 @@ animation filler::fill(PNG& img, int x, int y, colorPicker& fillColor,
     ai.addFrame(img);
 
     return ai;
- 
+
+
+
+    //  int k = 1;
+    // animation ai;
+
+
+    // OrderingStructure<vector<int>> os;
+
+    // // vector<vector<int>> pixelposyoinked;
+
+    // int proc[img.width()][img.height()];
+
+    // proc[img.width()][img.height()] = true;
+
+    // cout << proc[img.width()][img.height()] << endl;
+    // // vector<int> firstxy;
+
+    // // firstxy.push_back(x);
+    // // firstxy.push_back(y);
+
+    // // HSLAPixel* first = img.getPixel(x,y);
+    // // *first = fillColor(x,y);
+    // // proc[x][y] = true;
+    // // os.add(firstxy);
+    // // k++;
+    // // sendFrame(k,frameFreq,ai,img);
+
+    // vector<vector<int>> pixelposyoinked;
+
+    // vector<int> yoink;
+    // yoink.push_back(x);
+    // yoink.push_back(y);
+
+    // HSLAPixel* first = img.getPixel(yoink[0],yoink[1]);
+    // *first = fillColor(yoink[0],yoink[1]);
+    // pixelposyoinked.push_back(yoink);
+    // os.add(yoink);
+    // k++;
+    // sendFrame(k,frameFreq,ai,img);
+
+    // // change centerf
+
+    // while(!os.isEmpty()){
+    //     vector<int> removepixelxy;
+        
+    //     removepixelxy = os.remove();
+        
+    //     HSLAPixel* nyoinkp = img.getPixel(removepixelxy[0],removepixelxy[1]);
+
+    //     HSLAPixel* upright = img.getPixel(removepixelxy[0]+1,removepixelxy[1]-1);
+
+    //     vector<int> vupright;
+    //     vupright.push_back(removepixelxy[0]+1);
+    //     vupright.push_back(removepixelxy[1]-1); 
+
+    //     HSLAPixel* up = img.getPixel(removepixelxy[0],removepixelxy[1]-1);
+
+    //     vector<int> vup;
+    //     vup.push_back(removepixelxy[0]);
+    //     vup.push_back(removepixelxy[1]-1);
+
+        
+    //     HSLAPixel* upleft = img.getPixel(removepixelxy[0]-1,removepixelxy[1]-1);
+
+    //     vector<int> vupleft;
+    //     vupleft.push_back(removepixelxy[0]-1);
+    //     vupleft.push_back(removepixelxy[1]-1);
+
+        
+    //     HSLAPixel* left = img.getPixel(removepixelxy[0]-1,removepixelxy[1]);
+
+    //     vector<int> vleft;
+    //     vleft.push_back(removepixelxy[0]-1);
+    //     vleft.push_back(removepixelxy[1]);
+        
+    //     HSLAPixel* downleft = img.getPixel(removepixelxy[0]-1,removepixelxy[1]+1);
+
+    //     vector<int> vdownleft;
+    //     vdownleft.push_back(removepixelxy[0]-1);
+    //     vdownleft.push_back(removepixelxy[1]+1);
+        
+    //     HSLAPixel* down = img.getPixel(removepixelxy[0],removepixelxy[1]+1);
+
+    //     vector<int> vdown;
+    //     vdown.push_back(removepixelxy[0]);
+    //     vdown.push_back(removepixelxy[1]+1);
+        
+    //     HSLAPixel* downright = img.getPixel(removepixelxy[0]+1,removepixelxy[1]+1); 
+
+    //     vector<int> vdownright;
+    //     vdownright.push_back(removepixelxy[0]+1);
+    //     vdownright.push_back(removepixelxy[1]+1);
+        
+    //     HSLAPixel* right = img.getPixel(removepixelxy[0]+1,removepixelxy[1]);
+
+    //     vector<int> vright;
+    //     vright.push_back(removepixelxy[0]+1);
+    //     vright.push_back(removepixelxy[1]);
+
+    //     if(checkTolerance(first,tolerance,upright) && !findvector(pixelposyoinked,vupright)){
+    //         *upright = fillColor(vupright[0],vupright[1]);
+    //         os.add(vupright);
+    //         pixelposyoinked.push_back(vupright);
+    //          k++;
+    //         sendFrame(k,frameFreq,ai,img);
+    //     }
+
+    //     if(checkTolerance(first,tolerance,up) && !findvector(pixelposyoinked,vup)){
+    //         *up = fillColor(vup[0],vup[1]);
+    //         os.add(vup);
+    //         pixelposyoinked.push_back(vup);
+    //          k++;
+    //         sendFrame(k,frameFreq,ai,img);
+    //     }
+
+    //     if(checkTolerance(first,tolerance,upleft) && !findvector(pixelposyoinked,vupleft)){
+    //         *upleft = fillColor(vupleft[0],vupleft[1]);
+    //         os.add(vupleft);
+    //         pixelposyoinked.push_back(vupleft);
+    //          k++;
+    //         sendFrame(k,frameFreq,ai,img);
+    //     }
+
+    //     if(checkTolerance(first,tolerance,left) && !findvector(pixelposyoinked,vleft)){
+    //         *left = fillColor(vleft[0],vleft[1]);
+    //         os.add(vleft);
+    //         pixelposyoinked.push_back(vleft);
+    //          k++;
+    //         sendFrame(k,frameFreq,ai,img);
+    //     }
+
+    //     if(checkTolerance(first,tolerance,downleft) && !findvector(pixelposyoinked,vdownleft)){
+    //       *downleft = fillColor(vdownleft[0],vdownleft[1]);
+    //       os.add(vdownleft);
+    //       pixelposyoinked.push_back(vdownleft); 
+    //        k++;
+    //        sendFrame(k,frameFreq,ai,img); 
+    //     }
+
+    //     if(checkTolerance(first,tolerance,down) && !findvector(pixelposyoinked,vdown)){
+    //        *down =  fillColor(vdown[0],vdown[1]);
+    //         os.add(vdown);
+    //         pixelposyoinked.push_back(vdown);
+    //          k++;
+    //         sendFrame(k,frameFreq,ai,img);
+    //     }
+
+    //     if(checkTolerance(first,tolerance,downright) && !findvector(pixelposyoinked,vdownright)){
+    //        *downright = fillColor(vdownright[0],vdownright[1]);
+    //         os.add(vdownright);
+    //         pixelposyoinked.push_back(vdownright);
+    //          k++;
+    //         sendFrame(k,frameFreq,ai,img);
+    //     }
+
+    //     if(checkTolerance(first,tolerance,right) && !findvector(pixelposyoinked,vright)){
+    //         *right = fillColor(vright[0],vright[1]);
+    //         os.add(vright);
+    //         pixelposyoinked.push_back(vright);
+    //          k++;
+    //         sendFrame(k,frameFreq,ai,img);
+    //     }
+    // }
+    // ai.addFrame(img);
+
+    // return ai;
+
+
+
 
 
     /**
