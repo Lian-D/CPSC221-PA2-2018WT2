@@ -183,7 +183,7 @@ animation filler::fill(PNG& img, int x, int y, colorPicker& fillColor,
         vright.push_back(nyoink[0]+1);
         vright.push_back(nyoink[1]);
 
-        if(checkTolerance(nyoinkp,tolerance,upright) && !findvector(pixelposyoinked,vupright)){
+        if(checkTolerance(first,tolerance,upright) && !findvector(pixelposyoinked,vupright)){
             *upright = fillColor(vupright[0],vupright[1]);
             os.add(vupright);
             pixelposyoinked.push_back(vupright);
@@ -191,7 +191,7 @@ animation filler::fill(PNG& img, int x, int y, colorPicker& fillColor,
             sendFrame(k,frameFreq,ai,img);
         }
 
-        if(checkTolerance(nyoinkp,tolerance,up) && !findvector(pixelposyoinked,vup)){
+        if(checkTolerance(first,tolerance,up) && !findvector(pixelposyoinked,vup)){
             *up = fillColor(vup[0],vup[1]);
             os.add(vup);
             pixelposyoinked.push_back(vup);
@@ -199,7 +199,7 @@ animation filler::fill(PNG& img, int x, int y, colorPicker& fillColor,
             sendFrame(k,frameFreq,ai,img);
         }
 
-        if(checkTolerance(nyoinkp,tolerance,upleft) && !findvector(pixelposyoinked,vupleft)){
+        if(checkTolerance(first,tolerance,upleft) && !findvector(pixelposyoinked,vupleft)){
             *upleft = fillColor(vupleft[0],vupleft[1]);
             os.add(vupleft);
             pixelposyoinked.push_back(vupleft);
@@ -207,7 +207,7 @@ animation filler::fill(PNG& img, int x, int y, colorPicker& fillColor,
             sendFrame(k,frameFreq,ai,img);
         }
 
-        if(checkTolerance(nyoinkp,tolerance,left) && !findvector(pixelposyoinked,vleft)){
+        if(checkTolerance(first,tolerance,left) && !findvector(pixelposyoinked,vleft)){
             *left = fillColor(vleft[0],vleft[1]);
             os.add(vleft);
             pixelposyoinked.push_back(vleft);
@@ -215,7 +215,7 @@ animation filler::fill(PNG& img, int x, int y, colorPicker& fillColor,
             sendFrame(k,frameFreq,ai,img);
         }
 
-        if(checkTolerance(nyoinkp,tolerance,downleft) && !findvector(pixelposyoinked,vdownleft)){
+        if(checkTolerance(first,tolerance,downleft) && !findvector(pixelposyoinked,vdownleft)){
           *downleft = fillColor(vdownleft[0],vdownleft[1]);
           os.add(vdownleft);
           pixelposyoinked.push_back(vdownleft); 
@@ -223,7 +223,7 @@ animation filler::fill(PNG& img, int x, int y, colorPicker& fillColor,
            sendFrame(k,frameFreq,ai,img); 
         }
 
-        if(checkTolerance(nyoinkp,tolerance,down) && !findvector(pixelposyoinked,vdown)){
+        if(checkTolerance(first,tolerance,down) && !findvector(pixelposyoinked,vdown)){
            *down =  fillColor(vdown[0],vdown[1]);
             os.add(vdown);
             pixelposyoinked.push_back(vdown);
@@ -231,7 +231,7 @@ animation filler::fill(PNG& img, int x, int y, colorPicker& fillColor,
             sendFrame(k,frameFreq,ai,img);
         }
 
-        if(checkTolerance(nyoinkp,tolerance,downright) && !findvector(pixelposyoinked,vdownright)){
+        if(checkTolerance(first,tolerance,downright) && !findvector(pixelposyoinked,vdownright)){
            *downright = fillColor(vdownright[0],vdownright[1]);
             os.add(vdownright);
             pixelposyoinked.push_back(vdownright);
@@ -239,7 +239,7 @@ animation filler::fill(PNG& img, int x, int y, colorPicker& fillColor,
             sendFrame(k,frameFreq,ai,img);
         }
 
-        if(checkTolerance(nyoinkp,tolerance,right) && !findvector(pixelposyoinked,vright)){
+        if(checkTolerance(first,tolerance,right) && !findvector(pixelposyoinked,vright)){
             *right = fillColor(vright[0],vright[1]);
             os.add(vright);
             pixelposyoinked.push_back(vright);
@@ -249,6 +249,7 @@ animation filler::fill(PNG& img, int x, int y, colorPicker& fillColor,
         ai.addFrame(img);
     }
 
+    return ai;
  
 
 
