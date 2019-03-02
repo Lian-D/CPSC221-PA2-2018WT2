@@ -116,7 +116,7 @@ namespace filler
         
 
         // Checks tolerance between a pixel and its neighbor
-        bool checkTolerance(HSLAPixel* opixel, double tolerance,HSLAPixel* npixel);
+        bool checkTolerance(HSLAPixel opixel, double tolerance,HSLAPixel* npixel);
 
         bool findvector(vector<vector<int>> v1, vector<int> v2tofind);
 

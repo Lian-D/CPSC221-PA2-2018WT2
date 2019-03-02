@@ -92,178 +92,187 @@ template <template <class T> class OrderingStructure>
 animation filler::fill(PNG& img, int x, int y, colorPicker& fillColor,
                        double tolerance, int frameFreq)
 {
-    // OrderingStructure<HSLAPixel*> os;
-
-    // vector<HSLAPixel*> pixelposyoinked;
-
-    // HSLAPixel* first = img.getPixel(x,y);
-    // *first = fillColor(x,y);    
-    // pixelposyoinked.push_back(first);
-    // os.add(first);
-    
-
-    // while(!os.isEmpty()){
-    //     os.remove();
-    //     if()
-    // }
-
-        int k = 1;
+     int k = 0;
     animation ai;
 
 
     OrderingStructure<vector<int>> os;
 
-    // vector<vector<int>> pixelposyoinked;
+    // OLD CODE IGNORE vector<vector<int>> pixelposyoinked;
 
+    // 2d int array to store boolean values, a value is true if it has been processed, false if not
     int proc[img.width()][img.height()];
 
     proc[img.width()][img.height()] = true;
 
     cout << proc[img.width()][img.height()] << endl;
-    // vector<int> firstxy;
 
-    // firstxy.push_back(x);
-    // firstxy.push_back(y);
+    // Initializes the processed array to be all false at the start
+    for(int x = 0; x < img.width(); x++){
+        for(int y = 0; y < img.height(); y++){
+            proc[x][y] = false;
+        }
+    }
 
-    // HSLAPixel* first = img.getPixel(x,y);
-    // *first = fillColor(x,y);
-    // proc[x][y] = true;
-    // os.add(firstxy);
-    // k++;
-    // sendFrame(k,frameFreq,ai,img);
 
-    vector<vector<int>> pixelposyoinked;
+    // vector to store the center coordinates
+    vector<int> firstxy;
 
-    vector<int> yoink;
-    yoink.push_back(x);
-    yoink.push_back(y);
+    firstxy.push_back(x);
+    firstxy.push_back(y);
 
-    HSLAPixel* first = img.getPixel(yoink[0],yoink[1]);
-    *first = fillColor(yoink[0],yoink[1]);
-    pixelposyoinked.push_back(yoink);
-    os.add(yoink);
+    // changing the color of the pixel
+    HSLAPixel* first = img.getPixel(x,y);
+    HSLAPixel unchangedfirst = *first;
+    *first = fillColor(x,y);
+    //marking as processed
+    proc[x][y] = true;
+    // add to structure
+    os.add(firstxy);
+    // send frame if k is valid
     k++;
     sendFrame(k,frameFreq,ai,img);
+
+    // OLD CODE IGNORE
+    // vector<vector<int>> pixelposyoinked;
+
+    // vector<int> yoink;
+    // yoink.push_back(x);
+    // yoink.push_back(y);
+
+    // HSLAPixel* first = img.getPixel(yoink[0],yoink[1]);
+    // *first = fillColor(yoink[0],yoink[1]);
+    // pixelposyoinked.push_back(yoink);
+    // os.add(yoink);
+    // k++;
+    // sendFrame(k,frameFreq,ai,img);
 
     // change centerf
 
     while(!os.isEmpty()){
-        vector<int> nyoink;
+        // this vector represents the pixel that is about to be removed from the structure
+        vector<int> removepixelxy;
         
-        nyoink = os.remove();
-        
-        HSLAPixel* nyoinkp = img.getPixel(nyoink[0],nyoink[1]);
+        removepixelxy = os.remove();
 
-        HSLAPixel* upright = img.getPixel(nyoink[0]+1,nyoink[1]-1);
+
+        // HSLAPixel* nyoinkp = img.getPixel(removepixelxy[0],removepixelxy[1]);
+
+        // getting neighboring pixels
+        HSLAPixel* upright = img.getPixel(removepixelxy[0]+1,removepixelxy[1]-1);
 
         vector<int> vupright;
-        vupright.push_back(nyoink[0]+1);
-        vupright.push_back(nyoink[1]-1); 
+        vupright.push_back(removepixelxy[0]+1);
+        vupright.push_back(removepixelxy[1]-1); 
 
-        HSLAPixel* up = img.getPixel(nyoink[0],nyoink[1]-1);
+        HSLAPixel* up = img.getPixel(removepixelxy[0],removepixelxy[1]-1);
 
         vector<int> vup;
-        vup.push_back(nyoink[0]);
-        vup.push_back(nyoink[1]-1);
+        vup.push_back(removepixelxy[0]);
+        vup.push_back(removepixelxy[1]-1);
 
         
-        HSLAPixel* upleft = img.getPixel(nyoink[0]-1,nyoink[1]-1);
+        HSLAPixel* upleft = img.getPixel(removepixelxy[0]-1,removepixelxy[1]-1);
 
         vector<int> vupleft;
-        vupleft.push_back(nyoink[0]-1);
-        vupleft.push_back(nyoink[1]-1);
+        vupleft.push_back(removepixelxy[0]-1);
+        vupleft.push_back(removepixelxy[1]-1);
 
         
-        HSLAPixel* left = img.getPixel(nyoink[0]-1,nyoink[1]);
+        HSLAPixel* left = img.getPixel(removepixelxy[0]-1,removepixelxy[1]);
 
         vector<int> vleft;
-        vleft.push_back(nyoink[0]-1);
-        vleft.push_back(nyoink[1]);
+        vleft.push_back(removepixelxy[0]-1);
+        vleft.push_back(removepixelxy[1]);
         
-        HSLAPixel* downleft = img.getPixel(nyoink[0]-1,nyoink[1]+1);
+        HSLAPixel* downleft = img.getPixel(removepixelxy[0]-1,removepixelxy[1]+1);
 
         vector<int> vdownleft;
-        vdownleft.push_back(nyoink[0]-1);
-        vdownleft.push_back(nyoink[1]+1);
+        vdownleft.push_back(removepixelxy[0]-1);
+        vdownleft.push_back(removepixelxy[1]+1);
         
-        HSLAPixel* down = img.getPixel(nyoink[0],nyoink[1]+1);
+        HSLAPixel* down = img.getPixel(removepixelxy[0],removepixelxy[1]+1);
 
         vector<int> vdown;
-        vdown.push_back(nyoink[0]);
-        vdown.push_back(nyoink[1]+1);
+        vdown.push_back(removepixelxy[0]);
+        vdown.push_back(removepixelxy[1]+1);
         
-        HSLAPixel* downright = img.getPixel(nyoink[0]+1,nyoink[1]+1); 
+        HSLAPixel* downright = img.getPixel(removepixelxy[0]+1,removepixelxy[1]+1); 
 
         vector<int> vdownright;
-        vdownright.push_back(nyoink[0]+1);
-        vdownright.push_back(nyoink[1]+1);
+        vdownright.push_back(removepixelxy[0]+1);
+        vdownright.push_back(removepixelxy[1]+1);
         
-        HSLAPixel* right = img.getPixel(nyoink[0]+1,nyoink[1]);
+        HSLAPixel* right = img.getPixel(removepixelxy[0]+1,removepixelxy[1]);
 
         vector<int> vright;
-        vright.push_back(nyoink[0]+1);
-        vright.push_back(nyoink[1]);
+        vright.push_back(removepixelxy[0]+1);
+        vright.push_back(removepixelxy[1]);
 
-        if(checkTolerance(first,tolerance,upright) && !findvector(pixelposyoinked,vupright)){
+
+        // Here, check if the tolerance is valid and whether or not it has been processed yet, if both conditions are good
+        // then change pixel color, add to structure, mark as processed, and check frames
+        if(checkTolerance(unchangedfirst,tolerance,upright) && !(proc[vupright[0]][vupright[1]])){
+            cout<< "adding neigbor" << endl;
             *upright = fillColor(vupright[0],vupright[1]);
             os.add(vupright);
-            pixelposyoinked.push_back(vupright);
-             k++;
+            proc[vupright[0]][vupright[1]] = true;
+            k++;
             sendFrame(k,frameFreq,ai,img);
         }
 
-        if(checkTolerance(first,tolerance,up) && !findvector(pixelposyoinked,vup)){
+        if(checkTolerance(unchangedfirst,tolerance,up) && !(proc[vup[0]][vup[1]])){
             *up = fillColor(vup[0],vup[1]);
             os.add(vup);
-            pixelposyoinked.push_back(vup);
+            proc[vup[0]][vup[1]] = true;
              k++;
             sendFrame(k,frameFreq,ai,img);
         }
 
-        if(checkTolerance(first,tolerance,upleft) && !findvector(pixelposyoinked,vupleft)){
+        if(checkTolerance(unchangedfirst,tolerance,upleft) && !(proc[vupleft[0]][vupleft[1]])){
             *upleft = fillColor(vupleft[0],vupleft[1]);
             os.add(vupleft);
-            pixelposyoinked.push_back(vupleft);
+            proc[vupleft[0]][vupleft[1]] = true;
              k++;
             sendFrame(k,frameFreq,ai,img);
         }
 
-        if(checkTolerance(first,tolerance,left) && !findvector(pixelposyoinked,vleft)){
+        if(checkTolerance(unchangedfirst,tolerance,left) && !(proc[vleft[0]][vleft[1]])){
             *left = fillColor(vleft[0],vleft[1]);
             os.add(vleft);
-            pixelposyoinked.push_back(vleft);
+            proc[vleft[0]][vleft[1]] = true;
              k++;
             sendFrame(k,frameFreq,ai,img);
         }
 
-        if(checkTolerance(first,tolerance,downleft) && !findvector(pixelposyoinked,vdownleft)){
+        if(checkTolerance(unchangedfirst,tolerance,downleft) && !(proc[vdownleft[0]][vdownleft[1]])){
           *downleft = fillColor(vdownleft[0],vdownleft[1]);
           os.add(vdownleft);
-          pixelposyoinked.push_back(vdownleft); 
+           proc[vdownleft[0]][vdownleft[1]] = true;
            k++;
            sendFrame(k,frameFreq,ai,img); 
         }
 
-        if(checkTolerance(first,tolerance,down) && !findvector(pixelposyoinked,vdown)){
+        if(checkTolerance(unchangedfirst,tolerance,down) && !(proc[vdown[0]][vdown[1]])){
            *down =  fillColor(vdown[0],vdown[1]);
             os.add(vdown);
-            pixelposyoinked.push_back(vdown);
+            proc[vdown[0]][vdown[1]];
              k++;
             sendFrame(k,frameFreq,ai,img);
         }
 
-        if(checkTolerance(first,tolerance,downright) && !findvector(pixelposyoinked,vdownright)){
+        if(checkTolerance(unchangedfirst,tolerance,downright) && !(proc[vdownright[0]][vdownright[1]])){
            *downright = fillColor(vdownright[0],vdownright[1]);
             os.add(vdownright);
-            pixelposyoinked.push_back(vdownright);
+            proc[vdownright[0]][vdownright[1]] = true;
              k++;
             sendFrame(k,frameFreq,ai,img);
         }
 
-        if(checkTolerance(first,tolerance,right) && !findvector(pixelposyoinked,vright)){
+        if(checkTolerance(unchangedfirst,tolerance,right) && !(proc[vright[0]][vright[1]])){
             *right = fillColor(vright[0],vright[1]);
             os.add(vright);
-            pixelposyoinked.push_back(vright);
+            proc[vdownright[0]][vdownright[1]] = true;
              k++;
             sendFrame(k,frameFreq,ai,img);
         }
