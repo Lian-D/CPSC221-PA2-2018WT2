@@ -107,11 +107,30 @@ animation filler::fill(PNG& img, int x, int y, colorPicker& fillColor,
     //     if()
     // }
 
-    int k = 0;
+        int k = 1;
     animation ai;
 
 
     OrderingStructure<vector<int>> os;
+
+    // vector<vector<int>> pixelposyoinked;
+
+    int proc[img.width()][img.height()];
+
+    proc[img.width()][img.height()] = true;
+
+    cout << proc[img.width()][img.height()] << endl;
+    // vector<int> firstxy;
+
+    // firstxy.push_back(x);
+    // firstxy.push_back(y);
+
+    // HSLAPixel* first = img.getPixel(x,y);
+    // *first = fillColor(x,y);
+    // proc[x][y] = true;
+    // os.add(firstxy);
+    // k++;
+    // sendFrame(k,frameFreq,ai,img);
 
     vector<vector<int>> pixelposyoinked;
 
@@ -125,6 +144,8 @@ animation filler::fill(PNG& img, int x, int y, colorPicker& fillColor,
     os.add(yoink);
     k++;
     sendFrame(k,frameFreq,ai,img);
+
+    // change centerf
 
     while(!os.isEmpty()){
         vector<int> nyoink;
@@ -246,8 +267,8 @@ animation filler::fill(PNG& img, int x, int y, colorPicker& fillColor,
              k++;
             sendFrame(k,frameFreq,ai,img);
         }
-        ai.addFrame(img);
     }
+    ai.addFrame(img);
 
     return ai;
  
