@@ -92,7 +92,7 @@ template <template <class T> class OrderingStructure>
 animation filler::fill(PNG& img, int x, int y, colorPicker& fillColor,
                        double tolerance, int frameFreq)
 {
-     int k = 0;
+    int k = 0;
     animation ai;
 
 
@@ -126,12 +126,14 @@ animation filler::fill(PNG& img, int x, int y, colorPicker& fillColor,
     HSLAPixel unchangedfirst = *first;
     *first = fillColor(x,y);
     //marking as processed
+    if(x < img.width() && y < img.height()){
     proc[x][y] = true;
     // add to structure
     os.add(firstxy);
     // send frame if k is valid
     k++;
     sendFrame(k,frameFreq,ai,img);
+    }
 
     // OLD CODE IGNORE
     // vector<vector<int>> pixelposyoinked;
@@ -213,68 +215,83 @@ animation filler::fill(PNG& img, int x, int y, colorPicker& fillColor,
         // Here, check if the tolerance is valid and whether or not it has been processed yet, if both conditions are good
         // then change pixel color, add to structure, mark as processed, and check frames
         if(checkTolerance(unchangedfirst,tolerance,upright) && !(proc[vupright[0]][vupright[1]])){
-            cout<< "adding neigbor" << endl;
+            if(x < img.width() && y < img.height()){
             *upright = fillColor(vupright[0],vupright[1]);
             os.add(vupright);
             proc[vupright[0]][vupright[1]] = true;
             k++;
             sendFrame(k,frameFreq,ai,img);
+            }
         }
 
         if(checkTolerance(unchangedfirst,tolerance,up) && !(proc[vup[0]][vup[1]])){
+            if(x < img.width() && y < img.height()){
             *up = fillColor(vup[0],vup[1]);
             os.add(vup);
             proc[vup[0]][vup[1]] = true;
              k++;
             sendFrame(k,frameFreq,ai,img);
+            }
         }
 
         if(checkTolerance(unchangedfirst,tolerance,upleft) && !(proc[vupleft[0]][vupleft[1]])){
+            if(x < img.width() && y < img.height()){
             *upleft = fillColor(vupleft[0],vupleft[1]);
             os.add(vupleft);
             proc[vupleft[0]][vupleft[1]] = true;
              k++;
             sendFrame(k,frameFreq,ai,img);
+            }
         }
 
         if(checkTolerance(unchangedfirst,tolerance,left) && !(proc[vleft[0]][vleft[1]])){
+            if(x < img.width() && y < img.height()){
             *left = fillColor(vleft[0],vleft[1]);
             os.add(vleft);
             proc[vleft[0]][vleft[1]] = true;
              k++;
             sendFrame(k,frameFreq,ai,img);
+            }
         }
 
         if(checkTolerance(unchangedfirst,tolerance,downleft) && !(proc[vdownleft[0]][vdownleft[1]])){
+            if(x < img.width() && y < img.height()){
           *downleft = fillColor(vdownleft[0],vdownleft[1]);
           os.add(vdownleft);
            proc[vdownleft[0]][vdownleft[1]] = true;
            k++;
            sendFrame(k,frameFreq,ai,img); 
+            }
         }
 
         if(checkTolerance(unchangedfirst,tolerance,down) && !(proc[vdown[0]][vdown[1]])){
+            if(x < img.width() && y < img.height()){
            *down =  fillColor(vdown[0],vdown[1]);
             os.add(vdown);
             proc[vdown[0]][vdown[1]];
              k++;
             sendFrame(k,frameFreq,ai,img);
+            }
         }
 
         if(checkTolerance(unchangedfirst,tolerance,downright) && !(proc[vdownright[0]][vdownright[1]])){
+            if(x < img.width() && y < img.height()){
            *downright = fillColor(vdownright[0],vdownright[1]);
             os.add(vdownright);
             proc[vdownright[0]][vdownright[1]] = true;
              k++;
             sendFrame(k,frameFreq,ai,img);
+            }
         }
 
         if(checkTolerance(unchangedfirst,tolerance,right) && !(proc[vright[0]][vright[1]])){
+            if(x < img.width() && y < img.height()){
             *right = fillColor(vright[0],vright[1]);
             os.add(vright);
             proc[vdownright[0]][vdownright[1]] = true;
              k++;
             sendFrame(k,frameFreq,ai,img);
+            }
         }
     }
     ai.addFrame(img);
