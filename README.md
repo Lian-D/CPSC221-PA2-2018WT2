@@ -14,5 +14,6 @@ You will write a class named Queue that works just like the queue you heard abou
 Your Queue class must implement all of the methods mentioned in the given code. Please read the documentation in the header file to see what limitations we have placed on your Queue class and what the running times of each function should be.
 
 For this part of the assignment, you will be writing a number of functions that execute a “flood fill” on a PNG image. To flood fill a region of an image, you specify a point on the image and a fill color (or pattern) and all points similar in color and adjacent to the chosen point are changed to the fill color (or pattern). We will implement two different fill algorithms and three different fill patterns. The two fill algorithms are animated in the pictures above with a rainbow color fill pattern that we implemented.
+
 ![Alt Text](https://www.ugrad.cs.ubc.ca/~cs221/2018W2/mps/p2/bfsraingirl.gif)
 ![Alt Text](https://www.ugrad.cs.ubc.ca/~cs221/2018W2/mps/p2/dfsraingirl.gif)
